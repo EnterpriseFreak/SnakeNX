@@ -7,6 +7,7 @@
 #define STATE_GMAIN 1
 #define STATE_GOVER 2
 #define STATE_PAUSE 3
+#define STATE_BREAK 5
 
 typedef struct{
 	int x;
@@ -29,6 +30,8 @@ void gameover()
 	hidScanInput();
 	u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
 	
+	if (keys & KEY_MINUS) state = STATE_BREAK;
+	
 	if (keys & KEY_PLUS)
 	{
 		clearScreen = true;
@@ -44,6 +47,8 @@ void pause()
 	
 	hidScanInput();
 	u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
+	
+	if (keys & KEY_MINUS) state = STATE_BREAK;
 	
 	if (keys & KEY_PLUS)
 	{
@@ -63,10 +68,17 @@ void gamemain()
 	hidScanInput();
 	u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
 	
+	//DPAD
 	if (keys & KEY_DUP && direction != 3) direction = 2;
 	if (keys & KEY_DDOWN && direction != 2) direction = 3;
 	if (keys & KEY_DRIGHT && direction != 0) direction = 1;
-	if (keys & KEY_DLEFT && direction != 1) direction = 0;
+	if (keys & KEY_DLEFT &&direction != 1) direction = 0;
+	
+	//STICK
+	if (keys & KEY_LSTICK_UP && direction != 3) direction = 2;
+	if (keys & KEY_LSTICK_DOWN && direction != 2) direction = 3;
+	if (keys & KEY_LSTICK_RIGHT && direction != 0) direction = 1;
+	if (keys & KEY_LSTICK_LEFT &&direction != 1) direction = 0;
 	
 	
 	for (int moveTail = 0; moveTail < lenght; moveTail++)
@@ -103,6 +115,8 @@ void gamemain()
 		food.x = rand() % 79;
 	}
 	
+	if (keys & KEY_MINUS) state = STATE_BREAK;
+	
 	if (keys & KEY_PLUS)
 	{
 		clearScreen = true;
@@ -124,6 +138,8 @@ void titlescreen()
 	
 	hidScanInput();
 	u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
+	
+	if (keys & KEY_MINUS) state = STATE_BREAK;
 	
 	if (keys & KEY_PLUS)
 	{
@@ -159,14 +175,11 @@ int main(int argc, char **argv)
 	
 	while(appletMainLoop())
 	{
-		//hidScanInput();
-		//u64 keys = hidKeysDown(CONTROLLER_P1_AUTO);
-		//if (keys & KEY_MINUS) break;
-		
 		if (state == STATE_TITLE) { titlescreen(); };
 		if (state == STATE_GMAIN) { gamemain(); };
 		if (state == STATE_PAUSE) { pause(); };
 		if (state == STATE_GOVER) { gameover(); };
+		if (state == STATE_BREAK) { break; };
 		
 		gfxFlushBuffers();
 		gfxSwapBuffers();
