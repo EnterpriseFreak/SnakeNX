@@ -38,7 +38,7 @@ INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
 APP_TITLE	:=	SnakeNX
 APP_AUTHOR	:=	EnterpriseFreak
-APP_VERSION	:=	1.1.0
+APP_VERSION	:=	1.1.1
 #ROMFS	:=	romfs
 
 #---------------------------------------------------------------------------------

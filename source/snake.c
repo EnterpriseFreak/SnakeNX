@@ -169,8 +169,6 @@ void titlescreen()
 int main(int argc, char **argv)
 {
 	srand(time(NULL));
-	
-	gfxInitDefault();
 	consoleInit(NULL);
 	
 	while(appletMainLoop())
@@ -181,13 +179,12 @@ int main(int argc, char **argv)
 		if (state == STATE_GOVER) { gameover(); };
 		if (state == STATE_BREAK) { break; };
 		
-		gfxFlushBuffers();
-		gfxSwapBuffers();
-		gfxWaitForVsync();
-		gfxWaitForVsync();
-		gfxWaitForVsync();
+		consoleUpdate(NULL);
+        consoleUpdate(NULL);
+        consoleUpdate(NULL);
+        consoleUpdate(NULL);
 	}
 	
-	gfxExit();
+	consoleExit(NULL);
 	return 0;
 }
